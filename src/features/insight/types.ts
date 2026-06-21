@@ -67,7 +67,7 @@ export interface GenericInsightPayload {
   data_analise: string;
   resumo_executivo: string;
 
-  perfil_socioeconomico: {
+  perfil_socioeconomico?: {
     classificacao: string;
     racional: string;
   };
@@ -103,11 +103,23 @@ export interface GenericInsightPayload {
   dimensoes_cruzadas: string[];
 }
 
+// ─── BCB indicator time-series ───────────────────────────────────────
+export interface BcbIndicatorSeries {
+  key: string;
+  label: string;
+  unit: string;
+  frequency: string;
+  labels: string[];
+  data: number[];
+}
+
 // ─── Payload: generated_insight (real_estate_agent profile) ──────────
 export interface RealEstateInsightPayload {
   data_analise: string;
   resumo_executivo: string;
   regiao_id: string;
+
+  bcb_indicators_history?: BcbIndicatorSeries[] | null;
 
   perfil_mercado_imobiliario: {
     classificacao: string;

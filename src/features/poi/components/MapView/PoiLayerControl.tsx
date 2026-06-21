@@ -32,7 +32,7 @@ export function PoiLayerControl({
   const [showLegend, setShowLegend] = useState(false);
 
   return (
-    <div className="absolute top-6 right-6 z-[1000]">
+    <div className="absolute top-6 right-6 z-[1000] flex flex-col items-end">
       <OverlayButton
         position="top-right"
         active={showLegend && totalPois > 0}
@@ -41,6 +41,7 @@ export function PoiLayerControl({
         icon={poisLoading ? <Spinner size="xs" /> : <Layers className="w-3 h-3" />}
         onClick={() => !poisLoading && totalPois > 0 && setShowLegend((v) => !v)}
         ariaLabel="Controle de pontos de interesse"
+        className="static"
       >
         <span>POIs</span>
         {!poisLoading && totalPois > 0 && (

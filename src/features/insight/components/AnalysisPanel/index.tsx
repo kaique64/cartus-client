@@ -7,13 +7,19 @@ import type {
   InsightStreamStatus,
   ProcessedDataPayload,
   GeneratedInsightPayload,
+  RealEstateInsightPayload,
 } from "@/features/insight/types";
+
+function asRealEstate(insight: GeneratedInsightPayload): RealEstateInsightPayload | null {
+  return "score_atratividade" in insight ? (insight as RealEstateInsightPayload) : null;
+}
 import { ScoreCard } from "./ScoreCard";
 import { ExecutiveSummary } from "./ExecutiveSummary";
 import { DemographicsBlock } from "./DemographicsBlock";
 import { IncomeDistribution } from "./IncomeDistribution";
 import { CnaeSectors } from "./CnaeSectors";
 import { GapsAndOpportunities } from "./GapsAndOpportunities";
+import { BcbIndicatorsCharts } from "./BcbIndicatorsCharts";
 
 interface AnalysisPanelProps {
   result: SearchResult;
@@ -113,6 +119,13 @@ export function AnalysisPanel({
       )}
 
       {insight && <GapsAndOpportunities insight={insight} />}
+
+      {insight && asRealEstate(insight) && (
+        <>
+          <Separator />
+          <BcbIndicatorsCharts indicators={asRealEstate(insight)!.bcb_indicators_history} />
+        </>
+      )}
 
       <div className="border-t border-border mt-8 pt-4 pb-4 flex justify-between items-end">
         <p className="text-[9px] text-muted-foreground font-display tracking-[0.15em] uppercase">
