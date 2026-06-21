@@ -12,6 +12,11 @@ function ScoreBar({ value, max = 100 }: { value: number; max?: number }) {
   );
 }
 
+function resolveScore(insight: GeneratedInsightPayload): { valor: number; justificativa: string } {
+  if ("score_oportunidade" in insight) return insight.score_oportunidade;
+  return insight.score_atratividade;
+}
+
 interface ScoreCardProps {
   insight: GeneratedInsightPayload | null;
 }
@@ -27,15 +32,14 @@ export function ScoreCard({ insight }: ScoreCardProps) {
       </div>
     );
   }
+  const score = resolveScore(insight);
   return (
     <div className="mb-6">
-      <span className="text-5xl font-display font-bold text-foreground">
-        {insight.score_oportunidade.valor}
-      </span>
+      <span className="text-5xl font-display font-bold text-foreground">{score.valor}</span>
       <span className="text-xs text-muted-foreground ml-2 font-display">/100</span>
-      <ScoreBar value={insight.score_oportunidade.valor} />
+      <ScoreBar value={score.valor} />
       <p className="text-[10px] text-muted-foreground mt-2 leading-relaxed">
-        {insight.score_oportunidade.justificativa}
+        {score.justificativa}
       </p>
     </div>
   );

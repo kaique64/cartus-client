@@ -37,7 +37,7 @@ const INITIAL_STATE: InsightStreamState = {
 
 const MESH_KEY = (id: number) => ["municipality-mesh", id] as const;
 
-export function useInsightStream(cityName: string | null) {
+export function useInsightStream(cityName: string | null, profileId?: string) {
   const queryClient = useQueryClient();
   const [state, setState] = useState<InsightStreamState>(INITIAL_STATE);
 
@@ -82,6 +82,7 @@ export function useInsightStream(cityName: string | null) {
 
     let cancelled = false;
     const target = cityName;
+    const profile = profileId;
 
     receivedRef.current = new Set();
     setState(INITIAL_STATE);
@@ -90,7 +91,7 @@ export function useInsightStream(cityName: string | null) {
       setState((prev) => ({ ...prev, status: "requesting", error: null }));
 
       try {
-        const { job_id } = await requestInsight(target);
+        const { job_id } = await requestInsight(target, profile);
 
         if (cancelled) return;
 
@@ -199,7 +200,7 @@ export function useInsightStream(cityName: string | null) {
       cancelled = true;
       doCleanup();
     };
-  }, [cityName, doCleanup, maybeClose, queryClient]);
+  }, [cityName, profileId, doCleanup, maybeClose, queryClient]);
 
   useEffect(() => {
     return () => doCleanup();

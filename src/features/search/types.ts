@@ -3,6 +3,7 @@ export interface SearchResult {
   ibgeCode: number;
   center: [number, number];
   bbox?: [number, number, number, number];
+  profileId?: string;
 }
 
 export interface IBGEMunicipio {

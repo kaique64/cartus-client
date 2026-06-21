@@ -8,11 +8,11 @@ import type {
 } from "@/features/insight/types";
 import { BFF_BASE_URL } from "@/lib/env";
 
-export async function requestInsight(cityName: string): Promise<InsightRequestResponse> {
+export async function requestInsight(cityName: string, profileId?: string): Promise<InsightRequestResponse> {
   const res = await fetch(`${BFF_BASE_URL}/insights/request`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: cityName }),
+    body: JSON.stringify({ name: cityName, ...(profileId ? { profile_id: profileId } : {}) }),
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");

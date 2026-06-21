@@ -62,8 +62,8 @@ export interface ProcessedDataPayload {
   >;
 }
 
-// ─── Payload: generated_insight ──────────────────────────────────────
-export interface GeneratedInsightPayload {
+// ─── Payload: generated_insight (generic / no profile) ───────────────
+export interface GenericInsightPayload {
   data_analise: string;
   resumo_executivo: string;
 
@@ -102,6 +102,50 @@ export interface GeneratedInsightPayload {
 
   dimensoes_cruzadas: string[];
 }
+
+// ─── Payload: generated_insight (real_estate_agent profile) ──────────
+export interface RealEstateInsightPayload {
+  data_analise: string;
+  resumo_executivo: string;
+  regiao_id: string;
+
+  perfil_mercado_imobiliario: {
+    classificacao: string;
+    racional: string;
+  };
+
+  acessibilidade: {
+    avaliacao: string;
+    descricao: string;
+  };
+
+  demanda_estimada: {
+    avaliacao: string;
+    descricao: string;
+  };
+
+  oportunidades: Array<{
+    segmento: string;
+    viabilidade: "alta" | "media" | "baixa";
+    racional: string;
+    dado_que_suporta: string;
+  }>;
+
+  riscos: Array<{
+    fator: string;
+    impacto: "alto" | "medio" | "baixo";
+    descricao: string;
+  }>;
+
+  score_atratividade: {
+    valor: number;
+    justificativa: string;
+  };
+
+  dimensoes_cruzadas: string[];
+}
+
+export type GeneratedInsightPayload = GenericInsightPayload | RealEstateInsightPayload;
 
 // ─── Payload: pois_imported ──────────────────────────────────────────
 export interface PoisImportedPayload {

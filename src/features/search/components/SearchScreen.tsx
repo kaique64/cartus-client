@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MunicipalityAutocomplete } from "./MunicipalityAutocomplete";
 import { useMunicipalitySearch } from "@/features/search/hooks/useMunicipalitySearch";
 import type { IBGEMunicipio, SearchResult } from "@/features/search/types";
+import { ANALYSIS_PROFILES } from "@/types/profile";
 
 interface SearchScreenProps {
   onSearch: (result: SearchResult) => void;
@@ -10,6 +11,7 @@ interface SearchScreenProps {
 export function SearchScreen({ onSearch }: SearchScreenProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { query, setQuery, suggestions, loading, select } = useMunicipalitySearch();
+  const [profileId, setProfileId] = useState("");
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -17,7 +19,7 @@ export function SearchScreen({ onSearch }: SearchScreenProps) {
 
   const handleSelect = (mun: IBGEMunicipio) => {
     setQuery(`${mun.nome} — ${mun.microrregiao.mesorregiao.UF.sigla}`);
-    onSearch(select(mun));
+    onSearch({ ...select(mun), profileId: profileId || undefined });
   };
 
   return (
@@ -57,6 +59,21 @@ export function SearchScreen({ onSearch }: SearchScreenProps) {
           onSelect={handleSelect}
           onSubmit={() => suggestions[0] && handleSelect(suggestions[0])}
         />
+        <div className="flex items-center border-b border-border mt-6">
+          <select
+            value={profileId}
+            onChange={(e) => setProfileId(e.target.value)}
+            aria-label="Perfil de análise"
+            className="w-full bg-transparent py-3 text-sm font-body text-muted-foreground outline-none appearance-none cursor-pointer"
+          >
+            <option value="">Nenhum perfil selecionado</option>
+            {ANALYSIS_PROFILES.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <p
         className="mt-12 text-muted-foreground text-xs font-body tracking-wide opacity-0 animate-fade-in relative z-0"

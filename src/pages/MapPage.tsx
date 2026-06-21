@@ -28,8 +28,10 @@ const MapPage = () => {
     return sep !== -1 ? result.name.substring(0, sep) : result.name;
   }, [result]);
 
+  const profileId = searchParams.get("profile") ?? undefined;
+
   const { status, processedData, insight, geoJson, error, retry, poisImported, poiFailed } =
-    useInsightStream(cityName);
+    useInsightStream(cityName, profileId);
 
   const ibgeCode = result?.ibgeCode ?? null;
   const { pois, loading: fetchLoadingPois, categoriesSummary } = usePois(ibgeCode, !!poisImported);

@@ -10,5 +10,8 @@ export function buildMapUrl(result: SearchResult): string {
   if (result.bbox) {
     params.set("bbox", result.bbox.join(","));
   }
+  if (result.profileId) {
+    params.set("profile", result.profileId);
+  }
   return `/mapa?${params.toString()}`;
 }
