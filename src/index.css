@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 185 100% 50%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 64%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 64%;
+
+    --accent: 185 100% 50%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 185 100% 50%;
+
+    --radius: 0.25rem;
+
+    --carencia: 0 0% 98%;
+    --void: 0 0% 10%;
+    --cyan: 185 100% 50%;
+    --neutral: 0 0% 64%;
+
+    --font-display: 'Space Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+}
+
+/* Leaflet tile brightness */
+.map-tiles-lighter {
+  filter: brightness(1.4) contrast(0.95);
+}
+
+/* Mapbox overrides */
+.mapboxgl-ctrl-attrib,
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+/* Pulse animation for carência reveal */
+@keyframes carencia-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+.animate-carencia-pulse {
+  animation: carencia-pulse 1.2s ease-out forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--void));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--neutral));
+  border-radius: 2px;
+}
+
+/* Cartus title with map grid texture */
+.cartus-title {
+  background:
+    linear-gradient(0deg, hsl(var(--cyan) / 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--cyan) / 0.15) 1px, transparent 1px),
+    linear-gradient(135deg, hsl(var(--cyan) / 0.6), hsl(var(--foreground) / 0.9));
+  background-size: 12px 12px, 12px 12px, 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  overflow: visible;
+}
+
+.cartus-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40%,
+    hsl(var(--cyan) / 0.12) 48%,
+    hsl(var(--cyan) / 0.3) 50%,
+    hsl(var(--cyan) / 0.12) 52%,
+    transparent 60%,
+    transparent 100%
+  );
+  animation: cartus-scan 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.cartus-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--cyan) / 0.5), transparent);
+}
+
+@keyframes cartus-scan {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+/* Collapsible slide animation */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+[data-state="open"] > .collapsible-animate,
+.collapsible-animate[data-state="open"] {
+  animation: collapsible-down 300ms ease-out;
+}
+
+[data-state="closed"] > .collapsible-animate,
+.collapsible-animate[data-state="closed"] {
+  animation: collapsible-up 300ms ease-out forwards;
+  overflow: hidden;
+}
+
+/* POI tooltip styling */
+.poi-tooltip.leaflet-tooltip {
+  background: rgba(10, 12, 15, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(0 0% 20%);
+  color: hsl(0 0% 85%);
+  font-family: var(--font-body);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.poi-tooltip.leaflet-tooltip::before {
+  border-top-color: hsl(0 0% 20%);
+}
