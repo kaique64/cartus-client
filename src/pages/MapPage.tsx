@@ -79,6 +79,7 @@ const MapPage = () => {
               processedData={processedData}
               insight={insight}
               error={error}
+              profileId={profileId}
               onRetry={retry}
             />
           </div>
