@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useMunicipalityParams } from "@/features/municipality/hooks/useMunicipalityParams";
 import { InvalidParamsMessage } from "@/features/municipality/components/InvalidParamsMessage";
 import type { MunicipalityParams } from "@/features/municipality/types";
+import type { ProfileId } from "@/types/profile";
 
 const MapPage = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const MapPage = () => {
     return sep !== -1 ? result.name.substring(0, sep) : result.name;
   }, [result]);
 
-  const profileId = searchParams.get("profile") ?? undefined;
+  const profileId = (searchParams.get("profile") ?? undefined) as ProfileId | undefined;
 
   const { status, processedData, insight, geoJson, error, retry, poisImported, poiFailed } =
     useInsightStream(cityName, profileId);

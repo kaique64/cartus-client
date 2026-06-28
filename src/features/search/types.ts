@@ -1,9 +1,11 @@
+import type { ProfileId } from "@/types/profile";
+
 export interface SearchResult {
   name: string;
   ibgeCode: number;
   center: [number, number];
   bbox?: [number, number, number, number];
-  profileId?: string;
+  profileId?: ProfileId;
 }
 
 export interface IBGEMunicipio {

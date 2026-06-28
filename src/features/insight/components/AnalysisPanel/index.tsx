@@ -2,6 +2,7 @@ import { AlertCircle, RefreshCw } from "lucide-react";
 import { Spinner } from "@/components/feedback/Spinner";
 import { Separator } from "@/components/layout/Separator";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import type { ProfileId } from "@/types/profile";
 import type { SearchResult } from "@/features/search/types";
 import type {
   InsightStreamStatus,
@@ -31,7 +32,7 @@ interface AnalysisPanelProps {
   processedData: ProcessedDataPayload | null;
   insight: GeneratedInsightPayload | null;
   error: string | null;
-  profileId?: string;
+  profileId?: ProfileId;
   onRetry: () => void;
 }
 

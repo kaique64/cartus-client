@@ -1,8 +1,10 @@
 import type { ComponentType } from "react";
 import { Home } from "lucide-react";
 
+export type ProfileId = "real_estate_agent";
+
 export interface AnalysisProfile {
-  id: string;
+  id: ProfileId;
   label: string;
   description: string;
   Icon: ComponentType<{ className?: string }>;

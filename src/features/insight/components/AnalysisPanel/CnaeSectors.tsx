@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { formatNumber } from "@/lib/format";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 import type { ProcessedDataPayload } from "@/features/insight/types";
 
 type CnaeSector = ProcessedDataPayload["companies_by_cnae"][string];
@@ -128,6 +129,8 @@ function ExpandedDialog({
   data: ProcessedDataPayload;
   onClose: () => void;
 }) {
+  useEscapeKey(onClose);
+
   return createPortal(
     <div className="fixed inset-0 z-[1001] flex items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />

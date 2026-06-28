@@ -6,6 +6,7 @@ import type {
   PoisImportedPayload,
   InsightStreamStatus,
 } from "@/features/insight/types";
+import type { ProfileId } from "@/types/profile";
 import {
   requestInsight,
   connectInsightStream,
@@ -37,7 +38,7 @@ const INITIAL_STATE: InsightStreamState = {
 
 const MESH_KEY = (id: number) => ["municipality-mesh", id] as const;
 
-export function useInsightStream(cityName: string | null, profileId?: string) {
+export function useInsightStream(cityName: string | null, profileId?: ProfileId) {
   const queryClient = useQueryClient();
   const [state, setState] = useState<InsightStreamState>(INITIAL_STATE);
 
