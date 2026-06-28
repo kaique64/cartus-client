@@ -2,6 +2,7 @@ import { AlertCircle, RefreshCw } from "lucide-react";
 import { Spinner } from "@/components/feedback/Spinner";
 import { Separator } from "@/components/layout/Separator";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import type { ProfileId } from "@/types/profile";
 import type { SearchResult } from "@/features/search/types";
 import type {
   InsightStreamStatus,
@@ -10,8 +11,12 @@ import type {
   RealEstateInsightPayload,
 } from "@/features/insight/types";
 
-function asRealEstate(insight: GeneratedInsightPayload): RealEstateInsightPayload | null {
-  return "score_atratividade" in insight ? (insight as RealEstateInsightPayload) : null;
+function asRealEstate(
+  insight: GeneratedInsightPayload,
+): RealEstateInsightPayload | null {
+  return "score_atratividade" in insight
+    ? (insight as RealEstateInsightPayload)
+    : null;
 }
 import { ScoreCard } from "./ScoreCard";
 import { ExecutiveSummary } from "./ExecutiveSummary";
@@ -27,6 +32,7 @@ interface AnalysisPanelProps {
   processedData: ProcessedDataPayload | null;
   insight: GeneratedInsightPayload | null;
   error: string | null;
+  profileId?: ProfileId;
   onRetry: () => void;
 }
 
@@ -44,6 +50,7 @@ export function AnalysisPanel({
   processedData,
   insight,
   error,
+  profileId,
   onRetry,
 }: AnalysisPanelProps) {
   if (status === "error") {
@@ -51,7 +58,9 @@ export function AnalysisPanel({
       <CenteredMessage>
         <AlertCircle className="w-8 h-8 text-destructive mb-4" />
         <p className="text-sm text-foreground mb-2">Erro ao carregar dados</p>
-        <p className="text-xs text-muted-foreground mb-6 max-w-[250px]">{error}</p>
+        <p className="text-xs text-muted-foreground mb-6 max-w-[250px]">
+          {error}
+        </p>
         <button
           onClick={onRetry}
           className="flex items-center gap-2 text-xs text-cyan hover:text-cyan/80 transition-colors"
@@ -87,7 +96,10 @@ export function AnalysisPanel({
 
   return (
     <div className="p-6 font-body">
-      <div className="mb-8 opacity-0 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+      <div
+        className="mb-8 opacity-0 animate-slide-up"
+        style={{ animationDelay: "0.1s" }}
+      >
         <SectionHeading className="mb-4">ANÁLISE DE CARÊNCIA</SectionHeading>
         <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
           {processedData?.municipality_name} — {processedData?.uf}
@@ -120,16 +132,22 @@ export function AnalysisPanel({
 
       {insight && <GapsAndOpportunities insight={insight} />}
 
-      {insight && asRealEstate(insight) && (
-        <>
-          <Separator />
-          <BcbIndicatorsCharts indicators={asRealEstate(insight)!.bcb_indicators_history} />
-        </>
-      )}
+      {profileId === "real_estate_agent" &&
+        insight &&
+        asRealEstate(insight) && (
+          <>
+            <Separator />
+            <BcbIndicatorsCharts
+              indicators={asRealEstate(insight).bcb_indicators_history}
+            />
+          </>
+        )}
 
       <div className="border-t border-border mt-8 pt-4 pb-4 flex justify-between items-end">
         <p className="text-[9px] text-muted-foreground font-display tracking-[0.15em] uppercase">
-          {status === "complete" ? "CARTUS — ANÁLISE CONCLUÍDA" : "CARTUS — MAPEANDO..."}
+          {status === "complete"
+            ? "CARTUS — ANÁLISE CONCLUÍDA"
+            : "CARTUS — MAPEANDO..."}
         </p>
         {status === "complete" && insight && (
           <p className="text-[9px] text-muted-foreground font-display text-right">

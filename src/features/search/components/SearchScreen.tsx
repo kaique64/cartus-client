@@ -3,7 +3,7 @@ import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import { MunicipalityAutocomplete } from "./MunicipalityAutocomplete";
 import { useMunicipalitySearch } from "@/features/search/hooks/useMunicipalitySearch";
 import type { IBGEMunicipio, SearchResult } from "@/features/search/types";
-import { ANALYSIS_PROFILES } from "@/types/profile";
+import { ANALYSIS_PROFILES, type ProfileId } from "@/types/profile";
 
 interface SearchScreenProps {
   onSearch: (result: SearchResult) => void;
@@ -13,7 +13,7 @@ export function SearchScreen({ onSearch }: SearchScreenProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { query, setQuery, suggestions, loading, select } = useMunicipalitySearch();
-  const [profileId, setProfileId] = useState("");
+  const [profileId, setProfileId] = useState<ProfileId | "">("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const selectedProfile = ANALYSIS_PROFILES.find((p) => p.id === profileId) ?? null;

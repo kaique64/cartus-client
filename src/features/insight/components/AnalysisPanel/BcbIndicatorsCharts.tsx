@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SectionHeading } from "@/components/layout/SectionHeading";
+import { useEscapeKey } from "@/hooks/useEscapeKey";
 import type { BcbIndicatorSeries } from "@/features/insight/types";
 
 interface BcbIndicatorsChartsProps {
@@ -161,6 +162,8 @@ function ExpandedDialog({
   indicators: BcbIndicatorSeries[];
   onClose: () => void;
 }) {
+  useEscapeKey(onClose);
+
   return createPortal(
     <div className="fixed inset-0 z-[1001] flex items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />

@@ -6,9 +6,10 @@ import type {
   PoisImportedPayload,
   PoisImportFailedPayload,
 } from "@/features/insight/types";
+import type { ProfileId } from "@/types/profile";
 import { BFF_BASE_URL } from "@/lib/env";
 
-export async function requestInsight(cityName: string, profileId?: string): Promise<InsightRequestResponse> {
+export async function requestInsight(cityName: string, profileId?: ProfileId): Promise<InsightRequestResponse> {
   const res = await fetch(`${BFF_BASE_URL}/insights/request`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
